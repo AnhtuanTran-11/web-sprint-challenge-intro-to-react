@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import axios from 'axios';
+import { BASE_URL } from './constants/deploy';
+import CharacterList from './components/Character.js';
+import Details from './components/Details.js';
 
 const App = () => {
   // Try to think through what state you'll need for this app before starting. Then build out
@@ -9,11 +13,42 @@ const App = () => {
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
 
+  const [characterInfos, setCharacterInfos] = useState([]);
+  const [currentCharacter, setCurrentCharacter] = useState(null);
+  console.log("This is characterInfos",characterInfos);
+  const openDetails = name => {
+    setCurrentCharacter(name);
+  }
+
+  const closeData = () => {
+    setCurrentCharacter(null);
+  }
+
+  useEffect(() => { 
+    axios.get(`${BASE_URL}`)
+    .then(res => {
+      console.log(res.data.results);
+      setCharacterInfos(res.data.results);
+    })
+    .catch(err => {
+      
+    })
+  }, [])
+
   return (
     <div className="App">
       <h1 className="Header">Characters</h1>
+      {
+        characterInfos.map(char => {
+          return <CharacterList key={char.name} info={char} action={openDetails} />
+        })
+      }
+      {
+        currentCharacter && <Details info={currentCharacter} characterInfos={currentCharacter} close={closeData} />
+      }
     </div>
-  );
+  )
 }
 
 export default App;
+
