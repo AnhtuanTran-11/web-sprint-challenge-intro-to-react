@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
 import { BASE_URL } from './constants/deploy';
-import CharacterList from './components/Character.js';
+import CharacterList from './components/CharacterList.js';
 import Details from './components/Details.js';
 
 const App = () => {
@@ -15,19 +15,25 @@ const App = () => {
 
   const [characterInfos, setCharacterInfos] = useState([]);
   const [currentCharacter, setCurrentCharacter] = useState(null);
-  console.log("This is characterInfos",characterInfos);
-  const openDetails = name => {
-    setCurrentCharacter(name);
+  console.log("This is currentCharacter", currentCharacter);
+
+  const openDetails = info => {
+    setCurrentCharacter(info);
   }
 
   const closeData = () => {
     setCurrentCharacter(null);
   }
 
+  const eachDetail = characterInfos.map(char => {
+      return char;
+    });
+
+  console.log("This is each detail", eachDetail);
+
   useEffect(() => { 
     axios.get(`${BASE_URL}`)
     .then(res => {
-      console.log(res.data.results);
       setCharacterInfos(res.data.results);
     })
     .catch(err => {
@@ -44,7 +50,7 @@ const App = () => {
         })
       }
       {
-        currentCharacter && <Details info={currentCharacter} characterInfos={currentCharacter} close={closeData} />
+        currentCharacter && <Details eachDetail={currentCharacter} characterInfo={currentCharacter} close={closeData} />
       }
     </div>
   )

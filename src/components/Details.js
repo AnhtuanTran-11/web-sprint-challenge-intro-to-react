@@ -1,40 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { BASE_URL } from '../constants/deploy.js';
 import axios from 'axios';
+import styled, { keyframes } from 'styled-components';
+
+const StyledDetails = styled.div`
+    color: white;
+    font-size: 2rem;
+
+`
+
 
 export default function Details(props) {
-    const { characterInfos, close } = props;
-    const [details, setDetails] = useState(null);
-    console.log('This is what details is', details);
-
-    useEffect(() => {
-        axios.get(`${BASE_URL}`)
-            .then(res => { setDetails(res.data.results.map(eachDetail => {
-                return eachDetail;
-            })) })
-            .catch(err => { debugger }) // eslint-disable-line
-    }, [characterInfos])
+    const { eachDetail, close } = props;
 
     return (
-        <div>
+        <StyledDetails>
             <h2>Details:</h2>
-            {
-                details &&
-                <>
-
-                    <p>{details.name}</p>
-                    <h1>Name: {details.name}</h1>
-                    <p>Height: {details.height}</p>
-                    <p>Mass: {details.mass}</p>
-                    <p>Hair Color: {details.hair_color}</p>
-                    <p>Skin Color: {details.skin_color}</p>
-                    <p>Eye Color: {details.eye_color}</p>
-                    <p>Birth Year: {details.birth_year}</p>
-                    <p>Gender: {details.gender}</p>
-                    <p>Home World: {details.homeworld}</p>
-                </>
-            }
+            
+                
+                    <p>Name: {eachDetail.name}</p>
+                    <p>Height: {eachDetail.height}</p>
+                    <p>Mass: {eachDetail.mass}</p>
+                    <p>Hair Color: {eachDetail.hair_color}</p>
+                    <p>Skin Color: {eachDetail.skin_color}</p>
+                    <p>Eye Color: {eachDetail.eye_color}</p>
+                    <p>Birth Year: {eachDetail.birth_year}</p>
+                    <p>Gender: {eachDetail.gender}</p>
+                    <p>Home World: {eachDetail.homeworld}</p>
+                
+            
             <button onClick={close}>Close</button>
-        </div>
+        </StyledDetails>
     )
 }
